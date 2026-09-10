@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iglesia Alto Refugio Internacional Comalcalco</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Encabezado con Logo SVG en Código -->
+  <header class="navbar">
+    <div class="logo">
+      <svg class="logo-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="20,70 160,20 300,70" stroke="#38bdf8" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <g fill="#38bdf8">
+          <circle cx="65" cy="80" r="5" />
+          <path d="M65,85 L65,110 M65,95 L52,105 M65,95 L78,105 M65,110 L55,125 M65,110 L75,125" stroke="#38bdf8" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="100" cy="85" r="5" />
+          <path d="M100,90 L100,112 M100,98 L88,108 M100,98 L112,108 M100,112 L92,125 M100,112 L108,125" stroke="#38bdf8" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <line x1="135" y1="65" x2="135" y2="125" stroke="#38bdf8" stroke-width="7" stroke-linecap="round"/>
+        <text x="150" y="90" font-family="'Segoe UI', sans-serif" font-weight="800" font-size="26" fill="#0f172a" letter-spacing="1">ALTO</text>
+        <text x="150" y="118" font-family="'Segoe UI', sans-serif" font-weight="800" font-size="26" fill="#0f172a" letter-spacing="1">REFUGIO</text>
+        <line x1="20" y1="138" x2="300" y2="138" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+        <text x="160" y="158" font-family="'Segoe UI', sans-serif" font-weight="700" font-size="13" fill="#0f172a" text-anchor="middle" letter-spacing="3.5">INTERNACIONAL</text>
+        <text x="160" y="173" font-family="'Segoe UI', sans-serif" font-weight="700" font-size="12" fill="#0f172a" text-anchor="middle" letter-spacing="4">COMALCALCO</text>
+      </svg>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <nav class="nav-menu" id="navMenu">
+      <a href="#inicio">Inicio</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#horarios">Horarios</a>
+      <a href="#eventos">Eventos</a>
+      <a href="admin.html" class="btn-secondary" style="color: var(--primary-color); border-color: var(--primary-color);">Admin</a>
+      <a href="#contacto" class="btn-primary">Contacto</a>
+    </nav>
+  </header>
+
+  <!-- Banner Hero con Carrusel de Imágenes -->
+  <section id="inicio" class="hero">
+    <div class="carousel-container">
+      <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=1600&q=80');"></div>
+      <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1600&q=80');"></div>
+      <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=1600&q=80');"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Alto Refugio Comalcalco</h1>
+      <p>Un lugar de paz, restauración y comunidad. ¡Bienvenidos a casa!</p>
+      <div class="hero-buttons">
+        <a href="#horarios" class="btn-primary">Nuestros Horarios</a>
+        <a href="#contacto" class="btn-secondary">Visítanos</a>
+      </div>
+    </div>
+    <button class="carousel-btn prev" id="prevBtn" aria-label="Anterior">&#10094;</button>
+    <button class="carousel-btn next" id="nextBtn" aria-label="Siguiente">&#10095;</button>
+    <div class="carousel-dots" id="carouselDots">
+      <span class="dot active" data-slide="0"></span>
+      <span class="dot" data-slide="1"></span>
+      <span class="dot" data-slide="2"></span>
+    </div>
+  </section>
+
+  <!-- Banner de Versículo del Día -->
+  <section class="verse-banner">
+    <div class="verse-container">
+      <div class="verse-header">
+        <i class="fa-solid fa-quote-left verse-icon"></i>
+        <span class="church-tag">Alto Refugio Comalcalco</span>
+      </div>
+      <blockquote id="bibleVerse">Cargando palabra para hoy...</blockquote>
+      <cite id="verseReference"></cite>
+      <div class="verse-actions">
+        <button id="copyVerseBtn" class="btn-verse"><i class="fa-solid fa-copy"></i> Copiar Versículo</button>
+        <button id="shareVerseBtn" class="btn-verse"><i class="fa-solid fa-share-nodes"></i> Compartir</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nosotros -->
+  <section id="nosotros" class="section container">
+    <div class="section-title">
+      <h2>Quiénes Somos</h2>
+      <p>Nuestra visión como familia de fe</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card card-center">
+        <i class="fa-solid fa-heart card-icon"></i>
+        <h3>Amor</h3>
+        <p>Compartimos el amor e incondicional gracia de Dios con cada persona en Comalcalco.</p>
+      </div>
+      <div class="card card-center">
+        <i class="fa-solid fa-users card-icon"></i>
+        <h3>Comunidad</h3>
+        <p>Fomentamos relaciones genuinas donde encuentras apoyo, amistad y crecimiento espiritual.</p>
+      </div>
+      <div class="card card-center">
+        <i class="fa-solid fa-hands-holding-child card-icon"></i>
+        <h3>Servicio</h3>
+        <p>Buscamos ser refugio y ayuda para las familias de nuestra localidad.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Horarios -->
+  <section id="horarios" class="section bg-light">
+    <div class="container">
+      <div class="section-title">
+        <h2>Horarios de Reunión</h2>
+        <p>Te esperamos con los brazos abiertos</p>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <i class="fa-solid fa-sun card-icon"></i>
+          <h3>Reunión Dominical</h3>
+          <p><strong>Domingos:</strong> 10:00 AM</p>
+          <p>Tiempo de alabanza, adoración y enseñanza de la Palabra de Dios.</p>
+        </div>
+        <div class="card">
+          <i class="fa-solid fa-book-open card-icon"></i>
+          <h3>Oración y Estudio</h3>
+          <p><strong>Miércoles:</strong> 7:00 PM</p>
+          <p>Un espacio de intercesión y crecimiento bíblico en comunidad.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Eventos de Firebase -->
+  <section id="eventos" class="section container">
+    <div class="section-title">
+      <h2>Próximos Eventos</h2>
+      <p>Sé parte de nuestras actividades en Alto Refugio</p>
+    </div>
+    <div class="grid grid-3" id="eventos-container">
+      <p style="text-align: center; grid-column: 1/-1;">Cargando eventos de la iglesia...</p>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto" class="section bg-light">
+    <div class="container">
+      <div class="section-title">
+        <h2>Contacto y Ubicación</h2>
+        <p>Visítanos en Comalcalco</p>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Información de Contacto</h3>
+          <p><i class="fa-solid fa-location-dot"></i> Comalcalco, Tabasco, México</p>
+          <p><i class="fa-solid fa-phone"></i> +52 993 000 0000</p>
+          <p><i class="fa-solid fa-envelope"></i> contacto@altorefugiocomalcalco.org</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/p/Alto-Refugio-Internacional-Comalcalco-61572669266019/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.youtube.com/@ALTOREFUGIOINTERNACIONALCOMALC" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Envíanos un Mensaje</h3>
+          <form id="contactForm">
+            <div class="form-group"><input type="text" id="nombre" placeholder="Tu Nombre" required></div>
+            <div class="form-group"><input type="email" id="email" placeholder="Tu Correo Electrónico" required></div>
+            <div class="form-group"><textarea id="mensaje" rows="4" placeholder="¿En qué te podemos ayudar?" required></textarea></div>
+            <button type="submit" class="btn-primary btn-block">Enviar Mensaje</button>
+          </form>
+          <div id="formStatus" class="form-status"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-content">
+      <p>&copy; 2026 Iglesia Alto Refugio Internacional Comalcalco. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <!-- Firebase JavaScript -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD78Ng04iACIPpdWIS-v-HB7ghWcvSlBrE",
+      authDomain: "iglesia-85904.firebaseapp.com",
+      projectId: "iglesia-85904",
+      storageBucket: "iglesia-85904.firebasestorage.app",
+      messagingSenderId: "847682760100",
+      appId: "1:847682760100:web:4a22f96cc56a9e7100e531"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const container = document.getElementById('eventos-container');
+    
+    onSnapshot(collection(db, "eventos"), (snapshot) => {
+      container.innerHTML = "";
+      if (snapshot.empty) {
+        container.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>No hay eventos programados actualmente.</p>";
+        return;
+      }
+      snapshot.forEach((doc) => {
+        const evento = doc.data();
+        const imgHTML = evento.imagen ? `<img src="${evento.imagen}" alt="${evento.titulo}">` : '';
+        container.innerHTML += `
+          <div class="card">
+            ${imgHTML}
+            <div class="event-date">${evento.fecha || 'PRÓXIMAMENTE'}</div>
+            <h3>${evento.titulo || 'Sin título'}</h3>
+            <p>${evento.descripcion || ''}</p>
+            <span class="badge"><i class="fa-regular fa-clock"></i> ${evento.horario || ''}</span>
+          </div>
+        `;
+      });
+    });
+  </script>
+</body>
+</html>

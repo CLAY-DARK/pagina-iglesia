@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración - Alto Refugio Comalcalco</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .admin-container { display: flex; min-height: 100vh; padding-top: 60px; }
+    .sidebar { width: 250px; background-color: var(--primary-color); color: white; padding: 2rem 1rem; }
+    .sidebar a { color: white; text-decoration: none; display: block; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 0.5rem; }
+    .sidebar a:hover, .sidebar a.active { background-color: var(--secondary-color); color: var(--primary-color); font-weight: bold; }
+    .main-content { flex: 1; padding: 2rem; background-color: var(--bg-light); }
+    .login-modal { max-width: 400px; margin: 100px auto; }
+    .hidden { display: none !important; }
+    .btn-delete { background: var(--accent-color); color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+    .btn-delete:hover { opacity: 0.85; }
+    .event-item { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid #cbd5e1; gap: 1rem; }
+    .event-info { display: flex; align-items: center; gap: 1rem; }
+    .event-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; background: #e2e8f0; }
+  </style>
+</head>
+<body>
+
+  <!-- Encabezado Admin -->
+  <header class="navbar">
+    <div class="logo">
+      <i class="fa-solid fa-church"></i> Alto Refugio Admin
+    </div>
+    <a href="index.html" class="btn-secondary" style="color: var(--primary-color); border-color: var(--primary-color);">Ver Sitio Web</a>
+  </header>
+
+  <!-- Formulario de Acceso -->
+  <div id="loginSection" class="container">
+    <div class="card login-modal">
+      <h2 style="text-align: center; margin-bottom: 1.5rem;">Acceso Administrador</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Correo Electrónico</label>
+          <input type="email" id="adminUser" placeholder="cordovajorge182@gmail.com" required>
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="adminPass" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-primary btn-block">Ingresar al Panel</button>
+      </form>
+      <div id="loginError" style="color: var(--accent-color); margin-top: 1rem; text-align: center;"></div>
+    </div>
+  </div>
+
+  <!-- Panel Administrador -->
+  <div id="adminPanel" class="admin-container hidden">
+    <aside class="sidebar">
+      <h3>Menú Admin</h3>
+      <br>
+      <a href="#" class="active"><i class="fa-solid fa-calendar-plus"></i> Gestionar Eventos</a>
+      <a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
+    </aside>
+
+    <main class="main-content">
+      <h2>Gestión de Eventos - Alto Refugio Comalcalco</h2>
+      <br>
+      
+      <!-- Formulario para publicar evento -->
+      <div class="card">
+        <h3>Publicar Nuevo Evento</h3>
+        <br>
+        <form id="newEventForm">
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label>Título del Evento</label>
+              <input type="text" id="eventTitle" placeholder="Ej: Noche de Adoración" required>
+            </div>
+            <div class="form-group">
+              <label>Fecha</label>
+              <input type="text" id="eventDate" placeholder="Ej: 15 OCT" required>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label>Horario</label>
+              <input type="text" id="eventTime" placeholder="Ej: 7:00 PM" required>
+            </div>
+            <div class="form-group">
+              <label>Opción A: Subir imagen desde tu equipo (Recomendado)</label>
+              <input type="file" id="eventImageFile" accept="image/*">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Opción B: Pegar enlace/URL de foto (Facebook u otros)</label>
+            <input type="url" id="eventImageUrl" placeholder="https://ejemplo.com/foto.jpg">
+          </div>
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea id="eventDesc" placeholder="Detalles de la actividad..." rows="3" required></textarea>
+          </div>
+          <button type="submit" id="submitBtn" class="btn-primary">Publicar Evento</button>
+        </form>
+      </div>
+
+      <br>
+
+      <!-- Lista de Eventos Publicados -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3>Eventos Publicados</h3>
+          <small style="color: var(--text-light);">Elimina los eventos pasados con un clic</small>
+        </div>
+        <div id="eventsList">Cargando eventos...</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Script Firebase con Firestore y Storage Integrados -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+    // Configuración oficial de tu proyecto
+    const firebaseConfig = {
+      apiKey: "AIzaSyD78Ng04iACIPpdWIS-v-HB7ghWcvSlBrE",
+      authDomain: "iglesia-85904.firebaseapp.com",
+      projectId: "iglesia-85904",
+      storageBucket: "iglesia-85904.firebasestorage.app",
+      messagingSenderId: "847682760100",
+      appId: "1:847682760100:web:4a22f96cc56a9e7100e531",
+      measurementId: "G-PETMDZBL8W"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    const loginForm = document.getElementById('loginForm');
+    const loginSection = document.getElementById('loginSection');
+    const adminPanel = document.getElementById('adminPanel');
+    const loginError = document.getElementById('loginError');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const newEventForm = document.getElementById('newEventForm');
+    const eventsList = document.getElementById('eventsList');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Detector de Sesión
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginSection.classList.add('hidden');
+        adminPanel.classList.remove('hidden');
+        cargarEventosAdmin();
+      } else {
+        adminPanel.classList.add('hidden');
+        loginSection.classList.remove('hidden');
+      }
+    });
+
+    // Iniciar Sesión
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('adminUser').value.trim();
+      const pass = document.getElementById('adminPass').value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        loginError.textContent = "";
+      } catch (error) {
+        loginError.textContent = "Datos incorrectos. Revisa tu correo o contraseña.";
+      }
+    });
+
+    // Cerrar Sesión
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => signOut(auth));
+    }
+
+    // Publicar Evento (Procesa archivo local o enlace externo)
+    if (newEventForm) {
+      newEventForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const fileInput = document.getElementById('eventImageFile');
+        const urlInput = document.getElementById('eventImageUrl').value.trim();
+        const file = fileInput.files[0];
+        let imageUrl = "";
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Subiendo imagen y guardando...";
+
+        try {
+          // 1. Si el usuario seleccionó un archivo local, subir a Firebase Storage
+          if (file) {
+            const storageRef = ref(storage, `eventos/${Date.now()}_${file.name}`);
+            const snapshot = await uploadBytes(storageRef, file);
+            imageUrl = await getDownloadURL(snapshot.ref);
+          } 
+          // 2. Si no hay archivo pero pegó una URL, usar esa URL
+          else if (urlInput !== "") {
+            imageUrl = urlInput;
+          }
+
+          // 3. Guardar el documento en la base de datos Firestore
+          await addDoc(collection(db, "eventos"), {
+            titulo: document.getElementById('eventTitle').value,
+            fecha: document.getElementById('eventDate').value,
+            horario: document.getElementById('eventTime').value,
+            imagen: imageUrl,
+            descripcion: document.getElementById('eventDesc').value
+          });
+
+          newEventForm.reset();
+          alert("¡Evento publicado con éxito!");
+        } catch (error) {
+          alert("Error al subir imagen o publicar evento: " + error.message);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Publicar Evento";
+        }
+      });
+    }
+
+    // Cargar Lista de Eventos en Tiempo Real
+    function cargarEventosAdmin() {
+      onSnapshot(collection(db, "eventos"), (snapshot) => {
+        eventsList.innerHTML = "";
+        if (snapshot.empty) {
+          eventsList.innerHTML = "<p>No hay eventos registrados actualmente.</p>";
+          return;
+        }
+        
+        snapshot.forEach((docSnap) => {
+          const ev = docSnap.data();
+          const imgTag = ev.imagen 
+            ? `<img src="${ev.imagen}" class="event-thumb" alt="Foto">` 
+            : `<div class="event-thumb" style="display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#aaa;">Sin foto</div>`;
+
+          const div = document.createElement('div');
+          div.className = "event-item";
+          div.innerHTML = `
+            <div class="event-info">
+              ${imgTag}
+              <div>
+                <strong>${ev.titulo}</strong>
+                <div style="font-size: 0.85rem; color: #64748b;">${ev.fecha} — ${ev.horario}</div>
+              </div>
+            </div>
+            <button class="btn-delete" data-id="${docSnap.id}">
+              <i class="fa-solid fa-trash-can"></i> Eliminar
+            </button>
+          `;
+          eventsList.appendChild(div);
+        });
+
+        // Evento para eliminar
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            if (confirm("¿Confirmas que deseas eliminar este evento?")) {
+              await deleteDoc(doc(db, "eventos", id));
+            }
+          });
+        });
+      });
+    }
+  </script>
+</body>
+</html>
