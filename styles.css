@@ -42,8 +42,8 @@ body {
 }*/
 
 .logo-svg {
-     height: 48%;
-  width: auto;
+     height: auto;
+  width: 48%;
   display: block;
 }
 /*.logo {
