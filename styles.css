@@ -35,8 +35,18 @@ body {
   padding: 0.5rem 5%;
   z-index: 1000;
 }
-
 .logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-svg {
+    width: 180px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+/*.logo {
   height: 48px;
   width: auto;
   display: block;
@@ -47,7 +57,7 @@ body {
            object-fit: contain;
            display: block;
           }
-
+*/
 .nav-menu {
   display: flex;
   align-items: center;
