@@ -35,17 +35,17 @@ body {
   padding: 0.5rem 5%;
   z-index: 1000;
 }
+.logo-svg {
+  height: 48px;
+  width: auto;
+  display: block;
+}
 /*.logo {
     height: 48px;
     width: auto;
     display: block
 }*/
 
-.logo-svg {
-     height: auto;
-  width: 48%;
-  display: block;
-}
 /*.logo {
   height: 48px;
   width: auto;
