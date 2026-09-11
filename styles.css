@@ -41,8 +41,8 @@ body {
 }
 
 .logo-svg {
-    width: 180px;
-    max-width: 100%;
+    width: 48px;
+    max-width: 48%;
     height: auto;
     display: block;
 }
