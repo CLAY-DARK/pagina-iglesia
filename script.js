@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- D. Formulario de Contacto ---
   inicializarFormulario();
 
+  // --- E. Acceso Secreto Administrador ---
+  inicializarAccesoAdmin();
+
 });
 
 
@@ -132,7 +135,6 @@ async function obtenerVersiculoApi() {
     textoCompartir = `"${textoBase}" — ${citaBase}\n\nIglesia Alto Refugio Comalcalco`;
   }
 
-  // Lógica de botones (Copiar y Compartir) integrada dentro de la función de carga
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(textoCompartir).then(() => {
@@ -155,7 +157,6 @@ async function obtenerVersiculoApi() {
           });
         } catch (err) {}
       } else {
-        // Si no soporta compartir, simula clic en copiar
         if (copyBtn) copyBtn.click();
       }
     });
@@ -184,4 +185,27 @@ function inicializarFormulario() {
       }
     });
   }
+}
+
+// E. Función para Control de Acceso Secreto al Panel Admin
+function inicializarAccesoAdmin() {
+  const loginSection = document.getElementById('loginSection');
+  if (!loginSection) return;
+
+  // 1. Detectar parámetro ?admin=true en la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const esRutaAdmin = urlParams.get('admin') === 'true';
+
+  if (esRutaAdmin) {
+    loginSection.classList.remove('hidden');
+  } else {
+    loginSection.classList.add('hidden');
+  }
+
+  // 2. Atajo de teclado adicional (Ctrl + Shift + A) para alternar el login
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
+      loginSection.classList.toggle('hidden');
+    }
+  });
 }
