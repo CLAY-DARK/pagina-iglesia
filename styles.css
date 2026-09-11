@@ -36,11 +36,13 @@ body {
   z-index: 1000;
 }
 
-.logo-svg {
+/*.logo-svg {
   height: 48px;
   width: auto;
   display: block;
-}
+}*/
+.logo { width: 320px; height: 180px; } 
+.logo-img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
 .nav-menu {
   display: flex;
